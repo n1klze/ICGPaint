@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener {
+    @Getter
     private final Dimension size = new Dimension();
     private final Controller controller;
     @Getter
@@ -48,6 +49,20 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
                 image.setRGB(x, y, newImage.getRGB(x, y));
         }
         g2d = image.createGraphics();
+        repaint();
+    }
+
+    public void resizeCanvas(int newWidth, int newHeight) {
+        size.width = newWidth;
+        size.height = newHeight;
+        setPreferredSize(new Dimension(newWidth, newHeight));
+
+        BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+        g2d = newImage.createGraphics();
+        setDefaultBackground();
+        newImage.setData(image.getData());
+        image = newImage;
+
         repaint();
     }
 

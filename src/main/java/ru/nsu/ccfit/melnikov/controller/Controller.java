@@ -28,6 +28,10 @@ public class Controller {
     private int radius = 70;
     private int rotation = 0;
 
+    public void resizeCanvas(Canvas canvas, int width, int height) {
+        canvas.resizeCanvas(width, height);
+    }
+
     public void setCurrentTool(Tools tool, Map<Tools, ToolButton> toolBarButtons, Map<Tools, JRadioButtonMenuItem> viewMenuToolButtons) {
         currentTool = tool;
         toolBarButtons.get(tool).setSelected(true);

@@ -2,6 +2,7 @@ package ru.nsu.ccfit.melnikov.view;
 
 import ru.nsu.ccfit.melnikov.controller.Controller;
 import ru.nsu.ccfit.melnikov.model.Tools;
+import ru.nsu.ccfit.melnikov.view.components.ParametersDialog.ResizeDialog;
 import ru.nsu.ccfit.melnikov.view.components.buttons.ColoredButton;
 import ru.nsu.ccfit.melnikov.view.components.buttons.IconButton;
 import ru.nsu.ccfit.melnikov.view.components.ParametersDialog.FigureParametersDialog;
@@ -17,9 +18,11 @@ public class MainFrame extends JFrame {
     private static final Dimension MINIMUM_SIZE = new Dimension(640, 480);
     private static final Color[] MAIN_PALETTE_COLORS =
             {Color.BLACK, Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.MAGENTA, Color.WHITE};
-    private final Canvas canvas;
     private final Controller controller = new Controller();
+    private final Canvas canvas = new Canvas(controller, MINIMUM_SIZE);
+    private final JScrollPane scrollPane = new JScrollPane(canvas);
     private final FigureParametersDialog parametersDialog = new FigureParametersDialog(controller);
+    private final ResizeDialog resizeDialog = new ResizeDialog();
     private final Map<Tools, ToolButton> toolBarButtons = new HashMap<>();
     private final Map<Tools, JRadioButtonMenuItem> viewMenuToolButtons = new HashMap<>();
 
@@ -34,8 +37,6 @@ public class MainFrame extends JFrame {
         setJMenuBar(createMenuBar());
         add(createToolBar(), BorderLayout.NORTH);
 
-        canvas = new Canvas(controller, MINIMUM_SIZE);
-        var scrollPane = new JScrollPane(canvas);
         canvas.setPreferredSize(MINIMUM_SIZE);
         add(scrollPane);
     }
@@ -128,6 +129,18 @@ public class MainFrame extends JFrame {
         view.add(fill);
         view.add(polygon);
         view.add(star);
+
+        view.addSeparator();
+        var resize = new JMenuItem("Resize");
+        resize.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this, resizeDialog,
+                    "Resize", JOptionPane.OK_CANCEL_OPTION);
+            if (JOptionPane.OK_OPTION == confirm) {
+                controller.resizeCanvas(canvas, resizeDialog.getWidth(), resizeDialog.getHeight());
+                scrollPane.updateUI();
+            }
+        });
+        view.add(resize);
 
         return view;
     }
