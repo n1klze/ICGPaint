@@ -9,6 +9,8 @@ import ru.nsu.ccfit.melnikov.view.components.buttons.ToolButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainFrame extends JFrame {
     private static final String TITLE = "ICG Paint";
@@ -18,6 +20,8 @@ public class MainFrame extends JFrame {
     private final Canvas canvas;
     private final Controller controller = new Controller();
     private final FigureParametersDialog parametersDialog = new FigureParametersDialog(controller);
+    private final Map<Tools, ToolButton> toolBarButtons = new HashMap<>();
+    private final Map<Tools, JRadioButtonMenuItem> viewMenuToolButtons = new HashMap<>();
 
     public MainFrame() {
         setTitle(TITLE);
@@ -85,7 +89,47 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createViewMenu() {
-        return new JMenu("View");
+        var view = new JMenu("View");
+        var tools = new ButtonGroup();
+
+        var eraser = new JRadioButtonMenuItem(Tools.ERASER.toString());
+        eraser.addActionListener(e -> {
+            canvas.setDefaultBackground();
+            controller.setCurrentTool(Tools.ERASER, toolBarButtons, viewMenuToolButtons);
+        });
+        viewMenuToolButtons.put(Tools.ERASER, eraser);
+        var pen = new JRadioButtonMenuItem(Tools.PEN.toString());
+        pen.setSelected(true);
+        pen.addActionListener(e -> controller.setCurrentTool(Tools.PEN, toolBarButtons, viewMenuToolButtons));
+        viewMenuToolButtons.put(Tools.PEN, pen);
+        var line = new JRadioButtonMenuItem(Tools.LINE.toString());
+        line.addActionListener(e -> controller.setCurrentTool(Tools.LINE, toolBarButtons, viewMenuToolButtons));
+        viewMenuToolButtons.put(Tools.LINE, line);
+        var fill = new JRadioButtonMenuItem(Tools.FILL.toString());
+        fill.addActionListener(e -> controller.setCurrentTool(Tools.FILL, toolBarButtons, viewMenuToolButtons));
+        viewMenuToolButtons.put(Tools.FILL, fill);
+        var polygon = new JRadioButtonMenuItem(Tools.POLYGON.toString());
+        polygon.addActionListener(e -> controller.setCurrentTool(Tools.POLYGON, toolBarButtons, viewMenuToolButtons));
+        viewMenuToolButtons.put(Tools.POLYGON, polygon);
+        var star = new JRadioButtonMenuItem(Tools.STAR.toString());
+        star.addActionListener(e -> controller.setCurrentTool(Tools.STAR, toolBarButtons, viewMenuToolButtons));
+        viewMenuToolButtons.put(Tools.STAR, star);
+
+        tools.add(eraser);
+        tools.add(pen);
+        tools.add(line);
+        tools.add(fill);
+        tools.add(polygon);
+        tools.add(star);
+
+        view.add(eraser);
+        view.add(pen);
+        view.add(line);
+        view.add(fill);
+        view.add(polygon);
+        view.add(star);
+
+        return view;
     }
 
     private JMenu createAboutMenu() {
@@ -98,30 +142,36 @@ public class MainFrame extends JFrame {
 
         var toolButtonGroup = new ButtonGroup();
 
-        var eraser = new ToolButton(controller, Tools.ERASER);
+        var eraser = new ToolButton(controller, Tools.ERASER, toolBarButtons, viewMenuToolButtons);
+        toolBarButtons.put(Tools.ERASER, eraser);
         eraser.addActionListener(e -> canvas.setDefaultBackground());
         toolBar.add(eraser);
         toolButtonGroup.add(eraser);
 
         toolBar.addSeparator();
 
-        var pen = new ToolButton(controller, Tools.PEN);
+        var pen = new ToolButton(controller, Tools.PEN, toolBarButtons, viewMenuToolButtons);
+        toolBarButtons.put(Tools.PEN, pen);
         pen.setSelected(true);
         toolBar.add(pen);
         toolButtonGroup.add(pen);
-        var line = new ToolButton(controller, Tools.LINE);
+        var line = new ToolButton(controller, Tools.LINE, toolBarButtons, viewMenuToolButtons);
+        toolBarButtons.put(Tools.LINE, line);
         toolBar.add(line);
         toolButtonGroup.add(line);
-        var fill = new ToolButton(controller, Tools.FILL);
+        var fill = new ToolButton(controller, Tools.FILL, toolBarButtons, viewMenuToolButtons);
+        toolBarButtons.put(Tools.FILL, fill);
         toolBar.add(fill);
         toolButtonGroup.add(fill);
 
         toolBar.addSeparator();
 
-        var polygon = new ToolButton(controller, Tools.POLYGON);
+        var polygon = new ToolButton(controller, Tools.POLYGON, toolBarButtons, viewMenuToolButtons);
+        toolBarButtons.put(Tools.POLYGON, polygon);
         toolBar.add(polygon);
         toolButtonGroup.add(polygon);
-        var star = new ToolButton(controller, Tools.STAR);
+        var star = new ToolButton(controller, Tools.STAR, toolBarButtons, viewMenuToolButtons);
+        toolBarButtons.put(Tools.STAR, star);
         toolBar.add(star);
         toolButtonGroup.add(star);
 

@@ -7,6 +7,7 @@ import ru.nsu.ccfit.melnikov.model.Tools;
 import ru.nsu.ccfit.melnikov.view.Canvas;
 import ru.nsu.ccfit.melnikov.view.components.FileChooser.ImageLoader;
 import ru.nsu.ccfit.melnikov.view.components.FileChooser.ImageSaver;
+import ru.nsu.ccfit.melnikov.view.components.buttons.ToolButton;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 
 @Getter
@@ -25,6 +27,12 @@ public class Controller {
     private int numOfAngles = 5;
     private int radius = 70;
     private int rotation = 0;
+
+    public void setCurrentTool(Tools tool, Map<Tools, ToolButton> toolBarButtons, Map<Tools, JRadioButtonMenuItem> viewMenuToolButtons) {
+        currentTool = tool;
+        toolBarButtons.get(tool).setSelected(true);
+        viewMenuToolButtons.get(tool).setSelected(true);
+    }
 
     public void loadImage(Canvas canvas) {
         var loader = new ImageLoader();
