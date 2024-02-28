@@ -35,10 +35,9 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setJMenuBar(createMenuBar());
-        add(createToolBar(), BorderLayout.NORTH);
+        getContentPane().add(createToolBar(), BorderLayout.NORTH);
 
-        canvas.setPreferredSize(MINIMUM_SIZE);
-        add(scrollPane);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
 
     private JMenuBar createMenuBar() {
@@ -53,7 +52,10 @@ public class MainFrame extends JFrame {
     private JMenu createFileMenu() {
         var file = new JMenu("File");
         var open = new JMenuItem("Open");
-        open.addActionListener(e -> controller.loadImage(canvas));
+        open.addActionListener(e -> {
+            controller.loadImage(canvas);
+            scrollPane.revalidate();
+        });
         var save = new JMenuItem("Save");
         save.addActionListener(e -> controller.saveImage(canvas));
         var settings = new JMenuItem("Settings") {

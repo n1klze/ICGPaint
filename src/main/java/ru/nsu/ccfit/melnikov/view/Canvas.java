@@ -22,6 +22,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
 
     public Canvas(Controller controller, Dimension dimension) {
+        setPreferredSize(dimension);
         size.width = dimension.width;
         size.height = dimension.height;
         this.controller = controller;
@@ -36,6 +37,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public void setDefaultBackground() {
         g2d.setColor(DEFAULT_BACKGROUND_COLOR);
+        g2d.setBackground(DEFAULT_BACKGROUND_COLOR);
         g2d.fillRect(0, 0, size.width, size.height);
         repaint();
     }
@@ -43,12 +45,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void setImage(BufferedImage newImage) {
         size.width = newImage.getWidth();
         size.height = newImage.getHeight();
-        image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < size.height; ++y) {
-            for (int x = 0; x < size.width; ++x)
-                image.setRGB(x, y, newImage.getRGB(x, y));
-        }
+        image = newImage;
         g2d = image.createGraphics();
+        setPreferredSize(new Dimension(size.width, size.height));
         repaint();
     }
 
@@ -67,8 +66,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     @Override
-    public void paint(Graphics g) {
-        g.drawImage(image, 0, 0, this);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), this);
     }
 
     @Override
