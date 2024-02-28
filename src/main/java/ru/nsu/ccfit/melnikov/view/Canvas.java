@@ -77,9 +77,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getX() > size.width || e.getY() > size.height)
-            return;
-
         switch (controller.getCurrentTool()) {
             case PEN -> {
                 prevPoint = e.getPoint();
@@ -114,9 +111,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (e.getX() > size.width || e.getY() > size.height)
-            return;
-
         if (controller.getCurrentTool() == Tools.PEN) {
             g2d.setColor(controller.getCurrentColor());
             g2d.fillOval(e.getX() - controller.getThickness() / 2, e.getY() - controller.getThickness() / 2,
