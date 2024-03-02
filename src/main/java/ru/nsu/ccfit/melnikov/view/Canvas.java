@@ -12,8 +12,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener {
-    @Getter
-    private final Dimension size = new Dimension();
     private final Controller controller;
     @Getter
     private BufferedImage image;
@@ -23,8 +21,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public Canvas(Controller controller, Dimension dimension) {
         setPreferredSize(dimension);
-        size.width = dimension.width;
-        size.height = dimension.height;
         this.controller = controller;
         image = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_RGB);
         g2d = image.createGraphics();
@@ -38,22 +34,18 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void setDefaultBackground() {
         g2d.setColor(DEFAULT_BACKGROUND_COLOR);
         g2d.setBackground(DEFAULT_BACKGROUND_COLOR);
-        g2d.fillRect(0, 0, size.width, size.height);
+        g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
         repaint();
     }
 
     public void setImage(BufferedImage newImage) {
-        size.width = newImage.getWidth();
-        size.height = newImage.getHeight();
         image = newImage;
         g2d = image.createGraphics();
-        setPreferredSize(new Dimension(size.width, size.height));
+        setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         repaint();
     }
 
     public void resizeCanvas(int newWidth, int newHeight) {
-        size.width = newWidth;
-        size.height = newHeight;
         setPreferredSize(new Dimension(newWidth, newHeight));
 
         BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
