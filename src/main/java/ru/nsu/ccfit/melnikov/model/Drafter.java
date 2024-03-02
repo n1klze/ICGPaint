@@ -56,6 +56,7 @@ public final class Drafter {
      */
     public static void fill(BufferedImage image, Color color, int x, int y) {
         var seedColor = new Color(image.getRGB(x, y));
+        if (seedColor.equals(color)) return;
         if (!inside(image, x, y, seedColor)) return;
 
         Deque<Point> stack = new ArrayDeque<>();
