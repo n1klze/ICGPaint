@@ -7,6 +7,7 @@ import ru.nsu.ccfit.melnikov.view.components.buttons.ColoredButton;
 import ru.nsu.ccfit.melnikov.view.components.buttons.IconButton;
 import ru.nsu.ccfit.melnikov.view.components.ParametersDialog.FigureParametersDialog;
 import ru.nsu.ccfit.melnikov.view.components.buttons.ToolButton;
+import ru.nsu.ccfit.melnikov.view.components.menu.AboutMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -148,7 +149,7 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createAboutMenu() {
-        return new JMenu("About");
+        return new AboutMenu();
     }
 
     private JToolBar createToolBar() {
